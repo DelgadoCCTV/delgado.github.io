@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jethro Delgado — Supply Chain &amp; Operations Specialist</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --ink:#0F1318;
+  --panel:#161C24;
+  --panel-2:#1C232D;
+  --steel:#5B7A99;
+  --steel-dim:#3C5066;
+  --amber:#F2A93B;
+  --amber-dim:#A9762A;
+  --rust:#B5603A;
+  --paper:#EDEAE0;
+  --paper-dim:#A9A698;
+  --line:rgba(237,234,224,0.12);
+  --line-strong:rgba(237,234,224,0.22);
+  --display: 'Oswald', sans-serif;
+  --body: 'Archivo', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--body);
+  line-height:1.55;
+  overflow-x:hidden;
+}
+
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--amber);color:var(--ink);}
+
+/* ---------- Background texture: warehouse scene ---------- */
+.yard-bg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+}
+.yard-bg svg{width:100%;height:100%;}
+
+.grain{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  opacity:0.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.content{position:relative;z-index:2;}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:22px clamp(20px,5vw,64px);
+  background:linear-gradient(to bottom, rgba(15,19,24,0.92), rgba(15,19,24,0));
+  backdrop-filter:blur(2px);
+}
+.brandmark{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:13px;letter-spacing:0.08em;color:var(--paper-dim);
+}
+.brandmark .dot{width:7px;height:7px;border-radius:1px;background:var(--amber);box-shadow:0 0 8px var(--amber);}
+.navlinks{display:flex;gap:clamp(14px,2vw,32px);font-family:var(--mono);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;}
+.navlinks a{color:var(--paper-dim);border-bottom:1px solid transparent;padding-bottom:4px;transition:color .2s, border-color .2s;}
+.navlinks a:hover{color:var(--amber);border-color:var(--amber-dim);}
+@media (max-width:680px){.navlinks{display:none;}}
+
+/* ---------- Hero ---------- */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:140px clamp(20px,6vw,80px) 80px;
+  position:relative;
+}
+.manifest-tag{
+  font-family:var(--mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--amber);display:flex;align-items:center;gap:10px;margin-bottom:28px;
+  opacity:0;animation:rise .7s .1s forwards ease-out;
+}
+.manifest-tag::before{content:'';width:24px;height:1px;background:var(--amber);}
+
+.hero-title{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:clamp(48px, 8.4vw, 118px);
+  line-height:0.95;
+  letter-spacing:-0.01em;
+  text-transform:uppercase;
+  color:var(--paper);
+  opacity:0;animation:rise .8s .2s forwards ease-out;
+}
+.hero-title .accent{color:var(--amber);}
+.hero-sub{
+  font-family:var(--body);
+  font-weight:400;
+  font-size:clamp(16px,2vw,21px);
+  color:var(--paper-dim);
+  max-width:640px;
+  margin-top:24px;
+  opacity:0;animation:rise .8s .35s forwards ease-out;
+}
+
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,56px);
+  margin-top:56px;
+  opacity:0;animation:rise .8s .5s forwards ease-out;
+}
+.stat{border-left:2px solid var(--amber-dim);padding-left:16px;}
+.stat .num{font-family:var(--display);font-size:clamp(28px,3.4vw,40px);font-weight:600;color:var(--paper);line-height:1;}
+.stat .num span{color:var(--amber);}
+.stat .label{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--paper-dim);margin-top:6px;}
+
+@keyframes rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* scroll cue */
+.scroll-cue{
+  position:absolute;bottom:36px;left:clamp(20px,6vw,80px);
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--paper-dim);
+  opacity:0;animation:rise .8s .8s forwards ease-out;
+}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom, var(--amber), transparent);animation:slide 1.8s infinite ease-in-out;}
+@keyframes slide{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(14px);opacity:0;}}
+
+/* ---------- Section shell ---------- */
+section{
+  padding:120px clamp(20px,6vw,80px);
+  position:relative;
+}
+.bay-label{
+  font-family:var(--mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--steel);
+  display:flex;align-items:center;gap:10px;margin-bottom:18px;
+}
+.bay-label::before{content:'';width:24px;height:1px;background:var(--steel);}
+.section-title{
+  font-family:var(--display);font-weight:600;text-transform:uppercase;
+  font-size:clamp(32px,4.4vw,56px);line-height:1.05;letter-spacing:-0.005em;
+  margin-bottom:8px;
+}
+.section-title .accent{color:var(--amber);}
+.section-lede{
+  font-size:17px;color:var(--paper-dim);max-width:620px;margin-top:18px;
+}
+
+/* divider styled like a hazard strip */
+.hazard-rule{
+  height:6px;width:100%;
+  background:repeating-linear-gradient(135deg, var(--amber) 0 14px, var(--ink) 14px 28px);
+  opacity:0.55;
+  margin:0;
+}
+
+/* ---------- Summary ---------- */
+.summary-wrap{
+  display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:start;margin-top:60px;
+}
+@media (max-width:860px){.summary-wrap{grid-template-columns:1fr;}}
+.summary-text p{font-size:17px;color:var(--paper);opacity:0.92;max-width:560px;}
+.placard{
+  background:var(--panel);border:1px solid var(--line);border-radius:2px;padding:28px 30px;
+  position:relative;
+}
+.placard::before{
+  content:'CERT';position:absolute;top:-10px;left:24px;background:var(--ink);
+  font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:var(--steel);padding:0 8px;
+}
+.placard h4{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--steel);margin-bottom:14px;}
+.placard ul{list-style:none;}
+.placard li{
+  display:flex;justify-content:space-between;gap:12px;
+  font-family:var(--mono);font-size:13px;color:var(--paper-dim);
+  padding:9px 0;border-bottom:1px solid var(--line);
+}
+.placard li:last-child{border-bottom:none;}
+.placard li b{color:var(--paper);font-weight:500;}
+
+/* ---------- Competencies grid ---------- */
+.comp-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  margin-top:56px;
+  border:1px solid var(--line);
+  background:var(--line);
+}
+@media (max-width:860px){.comp-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.comp-grid{grid-template-columns:1fr;}}
+.comp-cell{
+  background:var(--panel);
+  padding:26px 24px;
+  display:flex;flex-direction:column;gap:10px;
+  transition:background .25s;
+}
+.comp-cell:hover{background:var(--panel-2);}
+.comp-cell .bin{font-family:var(--mono);font-size:11px;color:var(--amber-dim);letter-spacing:0.08em;}
+.comp-cell .ctitle{font-family:var(--display);font-size:17px;text-transform:uppercase;letter-spacing:0.01em;color:var(--paper);}
+
+/* ---------- Timeline / Experience ---------- */
+.dock{
+  margin-top:64px;
+  display:flex;flex-direction:column;
+}
+.dock-row{
+  display:grid;grid-template-columns:200px 1fr;gap:40px;
+  padding:38px 0;
+  border-top:1px solid var(--line);
+  position:relative;
+}
+.dock-row:first-child{border-top:1px solid var(--line-strong);}
+@media (max-width:760px){.dock-row{grid-template-columns:1fr;gap:14px;}}
+
+.dock-meta{font-family:var(--mono);font-size:12px;color:var(--steel);letter-spacing:0.04em;}
+.dock-meta .dur{display:block;color:var(--paper-dim);margin-top:6px;font-size:11px;}
+.dock-bay-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:22px;border:1px solid var(--steel-dim);color:var(--steel);
+  font-family:var(--mono);font-size:11px;margin-bottom:10px;border-radius:2px;
+}
+.dock-role{font-family:var(--display);font-size:clamp(20px,2.4vw,27px);text-transform:uppercase;color:var(--paper);margin-bottom:4px;}
+.dock-org{font-family:var(--body);font-size:14px;color:var(--amber);margin-bottom:18px;font-weight:600;}
+.dock-list{list-style:none;display:flex;flex-direction:column;gap:11px;max-width:680px;}
+.dock-list li{
+  position:relative;padding-left:20px;font-size:15px;color:var(--paper-dim);
+}
+.dock-list li::before{
+  content:'';position:absolute;left:0;top:8px;width:8px;height:2px;background:var(--steel);
+}
+
+/* ---------- Achievements ---------- */
+.achv-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:56px;
+}
+@media (max-width:760px){.achv-grid{grid-template-columns:1fr;}}
+.achv-card{
+  background:var(--panel);border:1px solid var(--line);padding:30px 28px;border-radius:2px;
+  border-left:3px solid var(--amber-dim);
+}
+.achv-card p{font-size:15.5px;color:var(--paper);opacity:0.9;}
+.achv-card .icon-row{font-family:var(--mono);font-size:11px;color:var(--steel);letter-spacing:0.1em;margin-bottom:12px;text-transform:uppercase;}
+
+/* ---------- Education + References ---------- */
+.split-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:56px;
+}
+@media (max-width:860px){.split-grid{grid-template-columns:1fr;}}
+.edu-card{
+  border:1px solid var(--line);padding:30px;background:var(--panel);
+}
+.edu-card .deg{font-family:var(--display);font-size:22px;text-transform:uppercase;color:var(--paper);margin-bottom:6px;}
+.edu-card .school{color:var(--steel);font-weight:600;font-size:14px;}
+.edu-card .date{font-family:var(--mono);font-size:12px;color:var(--paper-dim);margin-top:10px;}
+
+.ref-list{display:flex;flex-direction:column;gap:0;}
+.ref-row{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  padding:18px 0;border-bottom:1px solid var(--line);
+}
+.ref-row:first-child{border-top:1px solid var(--line);}
+.ref-name{font-family:var(--body);font-weight:600;font-size:15px;color:var(--paper);}
+.ref-role{font-family:var(--mono);font-size:12px;color:var(--paper-dim);margin-top:3px;}
+.ref-phone{font-family:var(--mono);font-size:13px;color:var(--steel);white-space:nowrap;}
+
+/* ---------- Contact / Footer ---------- */
+.contact-wrap{
+  text-align:left;
+  padding-top:0;
+}
+.contact-card{
+  background:var(--panel);border:1px solid var(--line-strong);padding:clamp(36px,6vw,64px);
+  display:flex;flex-direction:column;gap:28px;position:relative;overflow:hidden;
+}
+.contact-card::after{
+  content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;
+  background:radial-gradient(circle, rgba(242,169,59,0.12), transparent 70%);
+}
+.contact-links{display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,48px);}
+.contact-link{display:flex;flex-direction:column;gap:6px;}
+.contact-link .k{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--steel);}
+.contact-link .v{font-family:var(--display);font-size:clamp(18px,2vw,24px);color:var(--paper);text-transform:none;}
+.contact-link a.v:hover{color:var(--amber);}
+
+footer{
+  padding:36px clamp(20px,6vw,80px);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  font-family:var(--mono);font-size:11px;color:var(--paper-dim);letter-spacing:0.05em;
+  border-top:1px solid var(--line);
+}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease-out, transform .7s ease-out;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1;transform:none;transition:none;}
+  .hero-title,.hero-sub,.hero-stats,.manifest-tag,.scroll-cue{animation:none;opacity:1;}
+  .scroll-line{animation:none;}
+}
+
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<div class="yard-bg" aria-hidden="true">
+<svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0F1318"/>
+      <stop offset="55%" stop-color="#121821"/>
+      <stop offset="100%" stop-color="#171F29"/>
+    </linearGradient>
+    <linearGradient id="floorGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#171F29"/>
+      <stop offset="100%" stop-color="#0D1116"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="1000" fill="url(#skyGrad)"/>
+
+  <!-- distant rack silhouettes -->
+  <g opacity="0.35" stroke="#3C5066" stroke-width="2" fill="none">
+    <line x1="60" y1="120" x2="60" y2="520"/>
+    <line x1="160" y1="120" x2="160" y2="520"/>
+    <line x1="60" y1="180" x2="160" y2="180"/>
+    <line x1="60" y1="260" x2="160" y2="260"/>
+    <line x1="60" y1="340" x2="160" y2="340"/>
+    <line x1="60" y1="420" x2="160" y2="420"/>
+
+    <line x1="1440" y1="100" x2="1440" y2="560"/>
+    <line x1="1540" y1="100" x2="1540" y2="560"/>
+    <line x1="1440" y1="170" x2="1540" y2="170"/>
+    <line x1="1440" y1="250" x2="1540" y2="250"/>
+    <line x1="1440" y1="330" x2="1540" y2="330"/>
+    <line x1="1440" y1="410" x2="1540" y2="410"/>
+    <line x1="1440" y1="490" x2="1540" y2="490"/>
+  </g>
+
+  <!-- floor -->
+  <rect x="0" y="560" width="1600" height="440" fill="url(#floorGrad)"/>
+  <g stroke="#222B36" stroke-width="1.4" opacity="0.6">
+    <line x1="0" y1="640" x2="1600" y2="640"/>
+    <line x1="0" y1="740" x2="1600" y2="740"/>
+    <line x1="0" y1="860" x2="1600" y2="860"/>
+  </g>
+
+  <!-- hazard floor markings, perspective lines -->
+  <g stroke="#F2A93B" stroke-width="3" opacity="0.16">
+    <line x1="300" y1="1000" x2="500" y2="560"/>
+    <line x1="1300" y1="1000" x2="1100" y2="560"/>
+  </g>
+
+  <!-- pallet stacks left -->
+  <g transform="translate(120,560)" opacity="0.5">
+    <rect x="0" y="-40" width="130" height="40" fill="#2A2018" stroke="#4A3826" stroke-width="2"/>
+    <rect x="10" y="-90" width="110" height="46" fill="#231C16" stroke="#4A3826" stroke-width="2"/>
+    <rect x="0" y="-140" width="130" height="46" fill="#2A2018" stroke="#4A3826" stroke-width="2"/>
+    <g stroke="#5B7A99" stroke-width="1.5" opacity="0.5">
+      <line x1="0" y1="-20" x2="130" y2="-20"/>
+      <line x1="0" y1="-67" x2="110" y2="-67" transform="translate(10,0)"/>
+    </g>
+  </g>
+
+  <!-- pallet stacks right -->
+  <g transform="translate(1280,540)" opacity="0.45">
+    <rect x="0" y="-30" width="120" height="36" fill="#231C16" stroke="#4A3826" stroke-width="2"/>
+    <rect x="6" y="-78" width="108" height="48" fill="#2A2018" stroke="#4A3826" stroke-width="2"/>
+  </g>
+
+  <!-- large rack structure mid right, partly faded -->
+  <g transform="translate(980,260)" opacity="0.28" stroke="#5B7A99" stroke-width="2.5" fill="none">
+    <line x1="0" y1="0" x2="0" y2="320"/>
+    <line x1="220" y1="0" x2="220" y2="320"/>
+    <line x1="0" y1="60" x2="220" y2="60"/>
+    <line x1="0" y1="140" x2="220" y2="140"/>
+    <line x1="0" y1="220" x2="220" y2="220"/>
+    <line x1="0" y1="300" x2="220" y2="300"/>
+    <rect x="14" y="14" width="80" height="38" fill="#2A2018" opacity="0.7" stroke="none"/>
+    <rect x="120" y="14" width="80" height="38" fill="#231C16" opacity="0.7" stroke="none"/>
+    <rect x="14" y="94" width="80" height="38" fill="#231C16" opacity="0.7" stroke="none"/>
+    <rect x="120" y="174" width="80" height="38" fill="#2A2018" opacity="0.7" stroke="none"/>
+  </g>
+
+  <!-- forklift silhouette -->
+  <g transform="translate(640,720)" opacity="0.3" fill="none" stroke="#F2A93B" stroke-width="3">
+    <rect x="0" y="-10" width="90" height="46" rx="3" fill="#171F29" stroke="#A9762A"/>
+    <rect x="64" y="-58" width="8" height="48" fill="#A9762A" stroke="none"/>
+    <rect x="84" y="-58" width="8" height="48" fill="#A9762A" stroke="none"/>
+    <rect x="78" y="-14" width="40" height="6" fill="#F2A93B" stroke="none"/>
+    <circle cx="18" cy="40" r="13" fill="#0F1318" stroke="#5B7A99"/>
+    <circle cx="70" cy="40" r="13" fill="#0F1318" stroke="#5B7A99"/>
+  </g>
+
+  <!-- overhead lamps -->
+  <g opacity="0.5">
+    <line x1="380" y1="0" x2="380" y2="70" stroke="#222B36" stroke-width="3"/>
+    <ellipse cx="380" cy="72" rx="10" ry="5" fill="#F2A93B" opacity="0.5"/>
+    <ellipse cx="380" cy="72" rx="40" ry="18" fill="#F2A93B" opacity="0.06"/>
+
+    <line x1="900" y1="0" x2="900" y2="50" stroke="#222B36" stroke-width="3"/>
+    <ellipse cx="900" cy="52" rx="10" ry="5" fill="#F2A93B" opacity="0.4"/>
+    <ellipse cx="900" cy="52" rx="40" ry="18" fill="#F2A93B" opacity="0.05"/>
+
+    <line x1="1230" y1="0" x2="1230" y2="80" stroke="#222B36" stroke-width="3"/>
+    <ellipse cx="1230" cy="82" rx="10" ry="5" fill="#F2A93B" opacity="0.4"/>
+    <ellipse cx="1230" cy="82" rx="40" ry="18" fill="#F2A93B" opacity="0.05"/>
+  </g>
+
+  <!-- vignette -->
+  <rect x="0" y="0" width="1600" height="1000" fill="black" opacity="0"/>
+</svg>
+</div>
+<div class="grain"></div>
+
+<div class="content">
+
+<div class="topbar">
+  <div class="brandmark"><span class="dot"></span> J.DELGADO &nbsp;/&nbsp; SCM-OPS</div>
+  <nav class="navlinks">
+    <a href="#summary">Summary</a>
+    <a href="#competencies">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#achievements">Impact</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="manifest-tag">Manifest No. 0001 — Profile Cleared for Review</div>
+  <h1 class="hero-title">JETHRO<br>DEL<span class="accent">GADO</span></h1>
+  <p class="hero-sub">Supply chain &amp; operations specialist who has run the floor — receiving, put-away, dispatch, and the ERP screens behind all of it — across 7+ years in high-SKU distribution environments.</p>
+
+  <div class="hero-stats">
+    <div class="stat"><div class="num">7<span>+</span></div><div class="label">Years in Ops</div></div>
+    <div class="stat"><div class="num">98<span>%</span></div><div class="label">Inventory Accuracy</div></div>
+    <div class="stat"><div class="num">~100<span>K</span></div><div class="label">SKUs Managed</div></div>
+    <div class="stat"><div class="num">15–20<span>%</span></div><div class="label">Procurement Savings</div></div>
+  </div>
+
+  <div class="scroll-cue"><div class="scroll-line"></div> Scroll the dock</div>
+</header>
+
+<section id="summary">
+  <div class="hazard-rule"></div>
+  <div style="margin-top:60px;">
+    <div class="bay-label reveal">Bay 01 — Profile</div>
+    <h2 class="section-title reveal">Professional<br><span class="accent">Summary</span></h2>
+  </div>
+
+  <div class="summary-wrap">
+    <div class="summary-text reveal">
+      <p>Results-driven supply chain and operations professional with 7+ years of progressive experience managing end-to-end warehouse operations, procurement, and inventory control in fast-paced distribution environments.</p>
+      <br>
+      <p>Proven track record of optimizing supply chain efficiency, reducing procurement costs, and maintaining near-perfect inventory accuracy using ERP and WMS platforms. Skilled at leading cross-functional teams, building strategic vendor partnerships, and leveraging data analytics and AI tools to drive continuous operational improvement.</p>
+    </div>
+    <div class="placard reveal">
+      <h4>Quick Reference</h4>
+      <ul>
+        <li>Role <b>Warehouse Supervisor</b></li>
+        <li>Based in <b>Davao Region, PH</b></li>
+        <li>Core system <b>Oracle ERP</b></li>
+        <li>Education <b>B.S. Industrial Tech.</b></li>
+        <li>Email <b>delgadojethro@gmail.com</b></li>
+        <li>Phone <b>0927 345 2953</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="competencies">
+  <div class="bay-label reveal">Bay 02 — Core Competencies</div>
+  <h2 class="section-title reveal">What's On The <span class="accent">Shelf</span></h2>
+  <p class="section-lede reveal">Sixteen capabilities, stocked and ready — from ERP fluency to vendor negotiation to AI-assisted reporting.</p>
+
+  <div class="comp-grid reveal">
+    <div class="comp-cell"><span class="bin">BIN-A1</span><span class="ctitle">Supply Chain &amp; Logistics Optimization</span></div>
+    <div class="comp-cell"><span class="bin">BIN-A2</span><span class="ctitle">Inventory Control &amp; Demand Forecasting</span></div>
+    <div class="comp-cell"><span class="bin">BIN-A3</span><span class="ctitle">3PL Provider Negotiations</span></div>
+    <div class="comp-cell"><span class="bin">BIN-B1</span><span class="ctitle">Oracle ERP System (Advanced)</span></div>
+    <div class="comp-cell"><span class="bin">BIN-B2</span><span class="ctitle">Warehouse Management Systems</span></div>
+    <div class="comp-cell"><span class="bin">BIN-B3</span><span class="ctitle">Order Management &amp; Delivery Scheduling</span></div>
+    <div class="comp-cell"><span class="bin">BIN-C1</span><span class="ctitle">Data Analysis &amp; Trend Reporting</span></div>
+    <div class="comp-cell"><span class="bin">BIN-C2</span><span class="ctitle">Google Workspace &amp; GantterAI</span></div>
+    <div class="comp-cell"><span class="bin">BIN-C3</span><span class="ctitle">Process Improvement &amp; Cost Reduction</span></div>
+    <div class="comp-cell"><span class="bin">BIN-D1</span><span class="ctitle">Cycle Counting &amp; Stock Reconciliation</span></div>
+    <div class="comp-cell"><span class="bin">BIN-D2</span><span class="ctitle">Team Leadership &amp; Collaboration</span></div>
+    <div class="comp-cell"><span class="bin">BIN-D3</span><span class="ctitle">Good Warehouse Practices &amp; Compliance</span></div>
+    <div class="comp-cell"><span class="bin">BIN-E1</span><span class="ctitle">AI-Powered Tools (ChatGPT, Claude)</span></div>
+    <div class="comp-cell"><span class="bin">BIN-E2</span><span class="ctitle">Claims, Warranty &amp; Risk Management</span></div>
+    <div class="comp-cell"><span class="bin">BIN-E3</span><span class="ctitle">AI-Integrated Website Development</span></div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="bay-label reveal">Bay 03 — Dispatch Log</div>
+  <h2 class="section-title reveal">Professional <span class="accent">Experience</span></h2>
+  <p class="section-lede reveal">Four roles, one progression — from checking shipments on the dock to running the whole floor.</p>
+
+  <div class="dock">
+
+    <div class="dock-row reveal">
+      <div class="dock-meta">
+        <span class="dock-bay-num">04</span><br>
+        DecoArts Marketing Inc. (CitiHardware Inc.)
+        <span class="dur">May 2021 – May 2026 · 5 Years</span>
+      </div>
+      <div>
+        <div class="dock-role">Warehouse Supervisor</div>
+        <div class="dock-org">Most recent post</div>
+        <ul class="dock-list">
+          <li>Led end-to-end warehouse operations for a high-volume distribution environment — receiving, storage, picking, packing, and dispatch — with a focus on accuracy and efficiency.</li>
+          <li>Used WMS platforms to track inventory movements in real time, achieving a significant reduction in stock discrepancies and lifting inventory record accuracy above 98%.</li>
+          <li>Negotiated terms for office and production supplies, consistently securing favorable pricing and payment terms that reduced purchasing costs by an estimated 15–20%.</li>
+          <li>Delivered training on WMS, safe warehouse practices, and standard operating procedures, improving team productivity and reducing error rates.</li>
+          <li>Built daily dispatch monitoring reports and KPI dashboards to track operational performance and escalate issues proactively.</li>
+          <li>Owned Stock Discrepancy Reporting and Monitoring to maintain inventory accuracy and reconcile variances.</li>
+          <li>Enforced industry regulations and safety standards, maintaining a safe working environment with zero major incidents over the tenure.</li>
+          <li>Used Google Workspace to streamline reporting, project planning, and operational analysis, improving overall team efficiency.</li>
+          <li>Ran Order Management through the Oracle ERP system, approving dispatch of items and required shipment documentation (waybill, proforma, and stock-loading shipment payment).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dock-row reveal">
+      <div class="dock-meta">
+        <span class="dock-bay-num">03</span><br>
+        DecoArts Marketing Inc. (CitiHardware Inc.)
+        <span class="dur">May 2019 – May 2021 · 2 Years</span>
+      </div>
+      <div>
+        <div class="dock-role">Warehouse In-Charge</div>
+        <div class="dock-org">&nbsp;</div>
+        <ul class="dock-list">
+          <li>Performed daily cycle counts and inventory audits to maintain high inventory accuracy across nearly 100,000 SKUs.</li>
+          <li>Managed stock put-away processes from receiving to designated bin locations, ensuring proper inventory organization and traceability.</li>
+          <li>Prepared damage reports and liquidation documentation while collaborating with the Inventory Management team to reconcile discrepancies and maintain accurate stock records.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dock-row reveal">
+      <div class="dock-meta">
+        <span class="dock-bay-num">02</span><br>
+        DecoArts Marketing Inc. (CitiHardware Inc.)
+        <span class="dur">May 2018 – Feb 2019 · 9 Months</span>
+      </div>
+      <div>
+        <div class="dock-role">Dispatching In-Charge</div>
+        <div class="dock-org">&nbsp;</div>
+        <ul class="dock-list">
+          <li>Managed daily transportation and dispatch operations by coordinating carriers, assigning delivery resources, and liaising with third-party logistics providers to ensure on-time shipments.</li>
+          <li>Oversaw loading activities through effective workforce allocation and maintained detailed delivery reports to support operational efficiency and performance tracking.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dock-row reveal">
+      <div class="dock-meta">
+        <span class="dock-bay-num">01</span><br>
+        Davao EG Metal Forming Corp.
+        <span class="dur">May 2015 – Apr 2018 · 2 Yrs 11 Mos</span>
+      </div>
+      <div>
+        <div class="dock-role">Dispatching Checker / Operation In-Charge</div>
+        <div class="dock-org">&nbsp;</div>
+        <ul class="dock-list">
+          <li>Managed daily logistics and warehouse operations, including dispatch planning, truck and driver allocation, inventory receiving, and order fulfillment.</li>
+          <li>Supervised 30–40 warehouse personnel, ensuring accurate quality and quantity checks, efficient workflow execution, and adherence to safety standards.</li>
+          <li>Monitored stock movements, damaged goods, and returns while preparing operational reports, tonnage summaries, and logistics schedules.</li>
+          <li>Implemented process improvements and resource optimization strategies to enhance productivity and control logistics costs.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="bay-label reveal">Bay 04 — Key Achievements</div>
+  <h2 class="section-title reveal">Impact On The <span class="accent">Bottom Line</span></h2>
+
+  <div class="achv-grid">
+    <div class="achv-card reveal">
+      <div class="icon-row">Accuracy</div>
+      <p>Sustained above-98% inventory accuracy over a multi-year period through disciplined cycle counting and consistent WMS utilization in a high-SKU warehouse environment.</p>
+    </div>
+    <div class="achv-card reveal">
+      <div class="icon-row">Cost Control</div>
+      <p>Reduced purchasing costs by an estimated 15–20% through strategic 3PL provider coordination and vendor negotiation, contributing directly to improved operational margins.</p>
+    </div>
+    <div class="achv-card reveal">
+      <div class="icon-row">Leadership</div>
+      <p>Supervised teams of 30–40 warehouse personnel across multiple operational functions, fostering a culture of accountability and continuous improvement.</p>
+    </div>
+    <div class="achv-card reveal">
+      <div class="icon-row">Process Speed</div>
+      <p>Identified inefficiencies in order management and delivery scheduling, resulting in faster order fulfillment times across the distribution operation.</p>
+    </div>
+    <div class="achv-card reveal" style="grid-column:span 2;">
+      <div class="icon-row">Technology Adoption</div>
+      <p>Integrated AI-powered tools into day-to-day operations, applying technology to enhance forecasting, scheduling, and reporting accuracy — and zero major safety incidents across the full tenure as Warehouse Supervisor.</p>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="bay-label reveal">Bay 05 — Credentials</div>
+  <h2 class="section-title reveal">Education &amp; <span class="accent">References</span></h2>
+
+  <div class="split-grid">
+    <div class="reveal">
+      <div class="edu-card">
+        <div class="deg">B.S. Industrial Technology</div>
+        <div class="school">University of Southeastern Philippines</div>
+        <div class="date">Conferred April 2014</div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="ref-list">
+        <div class="ref-row">
+          <div>
+            <div class="ref-name">Charles Hung</div>
+            <div class="ref-role">Operations Manager — Everyglory Metal Corp.</div>
+          </div>
+          <div class="ref-phone">0917 802 7777</div>
+        </div>
+        <div class="ref-row">
+          <div>
+            <div class="ref-name">Felixcit Bebangco</div>
+            <div class="ref-role">HR Staff — DecoArts Marketing Inc.</div>
+          </div>
+          <div class="ref-phone">0985 601 8512</div>
+        </div>
+        <div class="ref-row">
+          <div>
+            <div class="ref-name">Glenn Espacio</div>
+            <div class="ref-role">Inventory Mgmt. Supervisor — Monde Nissin Corp.</div>
+          </div>
+          <div class="ref-phone">0946 587 7816</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="hazard-rule"></div>
+  <div style="margin-top:60px;" class="contact-wrap">
+    <div class="bay-label reveal">Bay 06 — Get In Touch</div>
+    <h2 class="section-title reveal">Ready To Move<br><span class="accent">The Next Shipment</span></h2>
+    <p class="section-lede reveal">Open to supply chain, warehouse operations, and logistics management roles. Let's talk about what needs moving.</p>
+
+    <div class="contact-card reveal" style="margin-top:48px;">
+      <div class="contact-links">
+        <div class="contact-link">
+          <span class="k">Email</span>
+          <a class="v" href="mailto:delgadojethro@gmail.com">delgadojethro@gmail.com</a>
+        </div>
+        <div class="contact-link">
+          <span class="k">Phone</span>
+          <a class="v" href="tel:09273452953">0927 345 2953</a>
+        </div>
+        <div class="contact-link">
+          <span class="k">LinkedIn</span>
+          <a class="v" href="https://linkedin.com/in/jethro-delgado-616a40240" target="_blank" rel="noopener">jethro-delgado</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Jethro Delgado — Supply Chain &amp; Operations</span>
+  <span>Manifest closed. Thank you for reviewing.</span>
+</footer>
+
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+    }
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>
